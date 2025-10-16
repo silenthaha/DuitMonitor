@@ -520,18 +520,25 @@ function createResponsiveTable(data, cols, mobileCols, type) {
     return '<p class="p-4 text-gray-500">Tiada data.</p>';
 
   let html = `<table class="min-w-full leading-normal"><thead class="bg-gray-100"><tr>`;
-  html += `<th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"></th>`; // Arrow column
+  // Arrow column
+  html += `<th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"></th>`;
+
+  // Main columns
   cols.forEach(
     (col) =>
       (html += `<th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">${col}</th>`)
   );
+  // Mobile columns
   mobileCols.forEach(
     (col) =>
       (html += `<th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider md:hidden">${col}</th>`)
   );
-  html += `<th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th></tr></thead><tbody>`;
+
+  // --- PEMBETULAN: Kolum "Aksi" telah dibuang dari header ---
+  html += `</tr></thead><tbody>`;
 
   data.forEach((item, index) => {
+    // Main data row
     html += `<tr class="hover:bg-gray-50">`;
     html += `<td class="px-5 py-5 border-b border-gray-200 text-sm"><button onclick="toggleRow('detail-${type}-${index}')" class="text-gray-400 hover:text-gray-600"><svg class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button></td>`;
 
@@ -544,22 +551,83 @@ function createResponsiveTable(data, cols, mobileCols, type) {
       html += `<td class="px-5 py-5 border-b border-gray-200 text-sm md:hidden">${value}</td>`;
     });
 
-    html += `<td class="px-5 py-5 border-b border-gray-200 text-sm"><button onclick="editTransaction('${item.id}')" class="text-indigo-600 hover:text-indigo-900 mr-2">Edit</button><button onclick="deleteTransaction('${item.id}')" class="text-red-600 hover:text-red-900">Delete</button></td>`;
+    // --- PEMBETULAN: Kolum "Aksi" telah dibuang dari baris utama ---
     html += `</tr>`;
+
+    // Details row (hidden by default)
+    // --- PEMBETULAN: colspan dikurangkan sebanyak 1 ---
     html += `<tr id="detail-${type}-${index}" class="hidden"><td colspan="${
-      cols.length + 2
-    }" class="px-5 py-3 border-b border-gray-200 bg-gray-50 text-sm"><div class="space-y-1">`;
+      cols.length + 1
+    }" class="px-5 py-3 border-b border-gray-200 bg-gray-50 text-sm"><div class="space-y-2">`;
+
+    // Display hidden columns for desktop view
     cols.forEach((col) => {
       if (!mobileCols.includes(col)) {
         let value = getNestedValue(item, col);
         html += `<p><strong>${col}:</strong> ${value}</p>`;
       }
     });
+
+    // --- PEMBETULAN: Butang Aksi dipindahkan ke sini ---
+    html += `
+        <div class="pt-2 border-t border-gray-200">
+            <button onclick="editTransaction('${item.id}')" class="bg-indigo-600 text-white text-xs font-bold py-1 px-3 rounded hover:bg-indigo-700 mr-2">Edit</button>
+            <button onclick="deleteTransaction('${item.id}')" class="bg-red-600 text-white text-xs font-bold py-1 px-3 rounded hover:bg-red-700">Delete</button>
+        </div>
+    `;
+
     html += `</div></td></tr>`;
   });
   html += `</tbody></table>`;
   return html;
 }
+
+// --- GENERIC TABLE CREATOR ---
+// function createResponsiveTable(data, cols, mobileCols, type) {
+//   if (!data || data.length === 0)
+//     return '<p class="p-4 text-gray-500">Tiada data.</p>';
+
+//   let html = `<table class="min-w-full leading-normal"><thead class="bg-gray-100"><tr>`;
+//   html += `<th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"></th>`; // Arrow column
+//   cols.forEach(
+//     (col) =>
+//       (html += `<th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">${col}</th>`)
+//   );
+//   mobileCols.forEach(
+//     (col) =>
+//       (html += `<th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider md:hidden">${col}</th>`)
+//   );
+//   html += `<th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th></tr></thead><tbody>`;
+
+//   data.forEach((item, index) => {
+//     html += `<tr class="hover:bg-gray-50">`;
+//     html += `<td class="px-5 py-5 border-b border-gray-200 text-sm"><button onclick="toggleRow('detail-${type}-${index}')" class="text-gray-400 hover:text-gray-600"><svg class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button></td>`;
+
+//     cols.forEach((col) => {
+//       let value = getNestedValue(item, col);
+//       html += `<td class="px-5 py-5 border-b border-gray-200 text-sm hidden md:table-cell">${value}</td>`;
+//     });
+//     mobileCols.forEach((col) => {
+//       let value = getNestedValue(item, col);
+//       html += `<td class="px-5 py-5 border-b border-gray-200 text-sm md:hidden">${value}</td>`;
+//     });
+
+//     html += `<td class="px-5 py-5 border-b border-gray-200 text-sm"><button onclick="editTransaction('${item.id}')" class="text-indigo-600 hover:text-indigo-900 mr-2">Edit</button><button onclick="deleteTransaction('${item.id}')" class="text-red-600 hover:text-red-900">Delete</button></td>`;
+//     html += `</tr>`;
+//     html += `<tr id="detail-${type}-${index}" class="hidden"><td colspan="${
+//       cols.length + 2
+//     }" class="px-5 py-3 border-b border-gray-200 bg-gray-50 text-sm"><div class="space-y-1">`;
+//     cols.forEach((col) => {
+//       if (!mobileCols.includes(col)) {
+//         let value = getNestedValue(item, col);
+//         html += `<p><strong>${col}:</strong> ${value}</p>`;
+//       }
+//     });
+//     html += `</div></td></tr>`;
+//   });
+//   html += `</tbody></table>`;
+//   return html;
+// }
 
 function getNestedValue(obj, key) {
   const lowerKey = key.toLowerCase();
