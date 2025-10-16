@@ -1,0 +1,10 @@
+/* Custom styles if needed, but Tailwind CSS handles most of it. */
+/* Contoh: Animasi untuk arrow toggle */
+.arrow-down {
+  transform: rotate(0deg);
+  transition: transform 0.2s ease-in-out;
+}
+.arrow-up {
+  transform: rotate(180deg);
+  transition: transform 0.2s ease-in-out;
+}

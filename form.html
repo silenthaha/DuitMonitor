@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ms">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Transaksi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+...
+    <script src="app.js"></script>
+</body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-gray-50 font-sans antialiased">
+    <div class="container mx-auto px-4 py-8 max-w-lg">
+      <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">
+          Daftar Transaksi Baru
+        </h2>
+        <form id="transaction-form">
+          <!-- Item -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="item"
+              >Item / Keterangan</label
+            >
+            <input
+              type="text"
+              id="item"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            />
+          </div>
+
+          <!-- Jenis (Duit Masuk/Keluar) -->
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2"
+              >Jenis Transaksi</label
+            >
+            <div class="flex space-x-4">
+              <label class="flex items-center">
+                <input
+                  type="radio"
+                  name="type"
+                  value="income"
+                  class="mr-2"
+                  required
+                />
+                <span>Duit Masuk</span>
+              </label>
+              <label class="flex items-center">
+                <input
+                  type="radio"
+                  name="type"
+                  value="expense"
+                  class="mr-2"
+                  required
+                />
+                <span>Duit Keluar</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Kategori -->
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="category"
+              >Kategori</label
+            >
+            <select
+              id="category"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            >
+              <option value="">Pilih Kategori</option>
+              <optgroup label="Duit Masuk">
+                <option value="Income">Income</option>
+                <option value="Part-time">Part-time</option>
+              </optgroup>
+              <optgroup label="Duit Keluar">
+                <option value="subscription">Subscription</option>
+                <option value="monthly commitment">Monthly Commitment</option>
+                <option value="daily spent">Daily Spent</option>
+                <option value="Pay Later">Pay Later</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <!-- Sumber Wallet -->
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="source"
+              >Sumber / Wallet</label
+            >
+            <select
+              id="source"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            >
+              <!-- Options will be populated by JS -->
+            </select>
+          </div>
+
+          <!-- Jumlah -->
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="amount"
+              >Jumlah (RM)</label
+            >
+            <input
+              type="number"
+              step="0.01"
+              id="amount"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            />
+          </div>
+
+          <!-- Tarikh -->
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="transaction-date"
+              >Tarikh Transaksi</label
+            >
+            <input
+              type="date"
+              id="transaction-date"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            />
+          </div>
+
+          <!-- End Date (for subscriptions) -->
+          <div class="mb-6 hidden" id="end-date-group">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="end-date"
+              >Tarikh Tamat (Jika Langganan)</label
+            >
+            <input
+              type="date"
+              id="end-date"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+
+          <!-- Medan Tarikh Jatuh Tempo untuk Pay Later -->
+          <div class="mb-6 hidden" id="due-date-group">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="due-date"
+              >Tarikh Jatuh Tempo</label
+            >
+            <input
+              type="date"
+              id="due-date"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+          <!-- Buttons -->
+          <div class="flex items-center justify-between">
+            <a
+              href="index.html"
+              class="bg-gray-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline text-sm"
+              >Kembali</a
+            >
+            <button
+              type="submit"
+              class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Simpan
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
