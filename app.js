@@ -330,7 +330,7 @@ function renderDebtList() {
     "Jatuh Tempo",
     "Status",
   ];
-  const mobileCols = ["Item", "Jatuh Tempo", "Status"];
+  const mobileCols = ["Item", "Jenis Pembayaran", "Kategori"];
 
   container.innerHTML = createResponsiveTable(
     data,
